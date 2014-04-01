@@ -1,7 +1,9 @@
 #include<GL\glut.h>
 #include<GL\freeglut.h>
 #include"engine.h"
-
+#pragma comment(lib,"DevIL.lib")
+#pragma comment(lib,"ilut.lib")
+#pragma comment(lib,"ilu.lib")
 engine *eng;
 
 void Display(void)
@@ -35,14 +37,13 @@ void KeyboarUp( unsigned char key, int x, int y )
 void Init()
 {
 
-                glClearColor(0.3, 1, 0.4, 1);
+                glClearColor(1, 1, 1,1);
 
-                glViewport(0, 0,  512,  512);
 
                 glMatrixMode( GL_PROJECTION);
                 glLoadIdentity();
 
-                gluPerspective(45, 1, 0.1, 200);
+                gluPerspective(45, 1366.0/768, 0.1, 200);
 
                 glMatrixMode( GL_MODELVIEW);
                 glLoadIdentity();
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-    //glutInitWindowSize(1600, 900);
+    //glutInitWindowSize(512, 288);
  
 	//glutGameModeString( "1024x768:32@60" );
 	//glutEnterGameMode();

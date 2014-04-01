@@ -1,6 +1,7 @@
 #include "engine.h"
+#include "TextureLoader.h"
 #include<GL/freeglut.h>
-
+TextureImage *tex;
 void DrawGrid(int x, float quad_size)
 {
             //x - количество или длина сетки, quad_size - размер клетки
@@ -43,7 +44,11 @@ void DrawGrid(int x, float quad_size)
 
 engine::engine(int Test)
 {      
-    camera = new Camera(0,10,10,0,0,0,0,0,-1);
+	tex = new TextureImage();
+	ilInit();
+    iluInit();
+    camera = new Camera(0,-10,10,0,0,0,0,0,1);
+	LoadTexture(IL_JPG,"grass.jpg",tex);
 }
 void engine::Keyboard(int key, int x, int y)
 {
@@ -51,7 +56,6 @@ void engine::Keyboard(int key, int x, int y)
 }
 void engine::Mouse(int button, int state, int x, int y)
 {
-
     if(button == GLUT_LEFT_BUTTON)
     {
         mouse.left = state;
@@ -72,11 +76,17 @@ void engine::Draw()//<--пока типа заглушка
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glColor3i(255, 0, 0);
+    glColor4i(255, 0, 0, 1);
     camera->Look(); //Обновляем взгляд камеры
-    glPushMatrix();
-    DrawGrid(30, 1);//Нарисуем сетку
-    glPopMatrix();
+	glBindTexture(GL_TEXTURE_2D, tex->texID);
+	glEnable(GL_TEXTURE_2D);
+    glBegin(GL_POLYGON);
+		glTexCoord2f(0,0);glVertex3f(-50,-50,0);
+		glTexCoord2f(1,0);glVertex3f(50,-50,0);
+		glTexCoord2f(1,1);glVertex3f(50,50,0);
+		glTexCoord2f(0,1);glVertex3f(-50,50,0);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
   glutSwapBuffers();
 }
 void engine::Proccesing()
