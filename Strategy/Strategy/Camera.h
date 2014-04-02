@@ -103,15 +103,15 @@ public:
 
                 mPos.z += speed;
                 mView.z+=speed;
-				if(mPos.z<=10)
+				if(mPos.z<=20)
 				{
-					mPos.z=10;
-					mView.z=0;
+					mPos.z=20;
+					mView.z=10;
 				}
-				if(mPos.z>=100)
+				if(mPos.z>=70)
 				{
-					mPos.z=100;
-					mView.z=90;
+					mPos.z=70;
+					mView.z=60;
 				}
             }
     void Look()
