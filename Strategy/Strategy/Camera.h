@@ -72,20 +72,21 @@ public:
 
     void Move_Camera(float speed) //Задаем скорость
             {
-				mPos.y +=  mStrafe.y * speed;
-				mView.y += mStrafe.y * speed;
-                /*Vector3D vVector; //Получаем вектор взгляда
+				mPos.z -=  mStrafe.z * speed;
+				mView.z -= mStrafe.z * speed;
+				
+               /*Vector3D vVector; //Получаем вектор взгляда
                 vVector.x = mView.x - mPos.x;
                 vVector.y = mView.y - mPos.y;
                 vVector.z = mView.z - mPos.z;
 
-                vVector.y = 0.0f; // Это запрещает камере подниматься вверх
+                vVector.z = 0.0f; // Это запрещает камере подниматься вверх
                 vVector = Normalize(vVector);
 
                 mPos.x += vVector.x * speed;
-                mPos.z += vVector.z * speed;
+                mPos.y += vVector.y * speed;
                 mView.x += vVector.x * speed;
-                mView.z += vVector.z * speed;*/
+                mView.y += vVector.y * speed;*/
             }
     void Strafe(float speed)
             {
@@ -101,17 +102,17 @@ public:
     void upDown(float speed)
             {
 
-                mPos.z += speed;
-                mView.z+=speed;
-				if(mPos.z<=20)
+                mPos.y += speed;
+                mView.y+=speed;
+				if(mPos.y<=20)
 				{
-					mPos.z=20;
-					mView.z=10;
+					mPos.y=20;
+					mView.y=10;
 				}
-				if(mPos.z>=70)
+				if(mPos.y>=70)
 				{
-					mPos.z=70;
-					mView.z=60;
+					mPos.y=70;
+					mView.y=60;
 				}
             }
     void Look()

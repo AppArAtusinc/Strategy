@@ -1,7 +1,11 @@
 #include "engine.h"
 #include "TextureLoader.h"
+#include"ModelLoader.h"
+
+#include<vector>
 #include<GL/freeglut.h>
 TextureImage *tex;
+std::vector<std::vector<float>> vertex,normals,texture,index,tindex;
 void DrawGrid(int x, float quad_size)
 {
             //x - количество или длина сетки, quad_size - размер клетки
@@ -47,8 +51,9 @@ engine::engine(int Test)
 	tex = new TextureImage();
 	ilInit();
     iluInit();
-    camera = new Camera(0,-10,10,0,0,0,0,0,1);
+    camera = new Camera(0,10,10,0,0,0,0,0,-1);
 	LoadTexture(IL_JPG,"grass.jpg",tex);
+	LoadModel("cube2.obj",vertex,normals,texture,index,tindex);
 }
 void engine::Keyboard(int key, int x, int y)
 {
@@ -76,16 +81,24 @@ void engine::Draw()//<--пока типа заглушка
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glColor4i(255, 0, 0, 1);
     camera->Look(); //Обновляем взгляд камеры
 	glBindTexture(GL_TEXTURE_2D, tex->texID);
+	
+	/*glPushMatrix();
+		DrawGrid(30,1);
+	glPopMatrix();*/
 	glEnable(GL_TEXTURE_2D);
-    glBegin(GL_POLYGON);
-		glTexCoord2f(0,0);glVertex3f(-50,-50,0);
-		glTexCoord2f(1,0);glVertex3f(50,-50,0);
-		glTexCoord2f(1,1);glVertex3f(50,50,0);
-		glTexCoord2f(0,1);glVertex3f(-50,50,0);
-	glEnd();
+	for(int  i=0;i<index.size();i++)
+	{
+		glBegin(GL_POLYGON);
+		for(int  j=0;j<index[i].size();j++)
+		{
+			glTexCoord2d(texture[tindex[i][j]-1][0], texture[tindex[i][j]-1][1]);
+			glVertex3f(vertex[index[i][j]-1][0],vertex[index[i][j]-1][1],vertex[index[i][j]-1][2]);
+		}
+		glEnd();
+	}
+
 	glDisable(GL_TEXTURE_2D);
   glutSwapBuffers();
 }

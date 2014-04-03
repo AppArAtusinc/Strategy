@@ -43,7 +43,7 @@ void Init()
                 glMatrixMode( GL_PROJECTION);
                 glLoadIdentity();
 
-                gluPerspective(45, 1366.0/768, 0.1, 200);
+                gluPerspective(45, 1366.0/768, 0.1, 1000);
 
                 glMatrixMode( GL_MODELVIEW);
                 glLoadIdentity();
