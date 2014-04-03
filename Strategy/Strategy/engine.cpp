@@ -52,8 +52,8 @@ engine::engine(int Test)
 	ilInit();
     iluInit();
     camera = new Camera(0,10,10,0,0,0,0,0,-1);
-	LoadTexture(IL_JPG,"grass.jpg",tex);
-	LoadModel("cube2.obj",vertex,normals,texture,index,tindex);
+	LoadTexture(IL_JPG,"wall.jpg",tex);
+	LoadModel("piramida.obj",vertex,normals,texture,index,tindex);
 }
 void engine::Keyboard(int key, int x, int y)
 {
