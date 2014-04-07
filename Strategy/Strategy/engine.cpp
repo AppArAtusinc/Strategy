@@ -1,12 +1,14 @@
-#include "engine.h"
-#include "TextureLoader.h"
-#include"ModelLoader.h"
+#include"engine.h"
 #include<time.h>
 #include<vector>
+#include<IL\il.h>
 #include<GL/freeglut.h>
 #include<iostream>
-TextureImage *tex;
-std::vector<std::vector<float>> vertex,normals,texture,index,tindex;
+#include"GameObject.h"
+#include"TextureLoader.h"
+Unit* unit;
+FactoryUnit* fac;
+TextureImage* tex;
 void DrawGrid(int x, float quad_size)
 {
             //x - количество или длина сетки, quad_size - размер клетки
@@ -49,12 +51,14 @@ void DrawGrid(int x, float quad_size)
 
 engine::engine(int Test)
 {      
-	tex = new TextureImage();
 	ilInit();
     iluInit();
     camera = new Camera(0,10,10,0,0,0,0,0,-1);
-	LoadTexture(IL_JPG,"conus.jpg",tex);
-	LoadModel("mirrow.obj",vertex,normals,texture,index,tindex);
+	tex = new TextureImage();
+	LoadTexture(IL_JPG,"grass.jpg",tex);
+	fac = new  FactoryUnit("sdf");
+	fac->Load("women.obj", "wall.jpg");
+	unit = fac->GetUnit(0,0,0);
 }
 void engine::Keyboard(int key, int x, int y)
 {
@@ -94,26 +98,20 @@ void engine::Draw()//<--пока типа заглушка
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     camera->Look(); //Обновляем взгляд камеры
-	glBindTexture(GL_TEXTURE_2D, tex->texID);
-	
+	glBindTexture(GL_TEXTURE_2D,tex->texID);
+	glEnable(GL_TEXTURE_2D);
+	glBegin(GL_POLYGON);
+	glTexCoord2f(0,0);glVertex3f(-20,0,-20);
+	glTexCoord2f(1,0);glVertex3f(20,0,-20);
+	glTexCoord2f(1,1);glVertex3f(20,0,20);
+	glTexCoord2f(0,1);glVertex3f(-20,0,20);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	unit->Draw();
 	/*glPushMatrix();
 		DrawGrid(30,1);
 	glPopMatrix();*/
-	glEnable(GL_TEXTURE_2D);
 	
-	for(int  i=0;i<index.size();i++)
-	{
-		glBegin(GL_POLYGON);
-		for(int  j=0;j<index[i].size();j++)
-		{
-			glTexCoord2d(texture[tindex[i][j]-1][0], texture[tindex[i][j]-1][1]);
-			glVertex3f(vertex[index[i][j]-1][0],vertex[index[i][j]-1][1],vertex[index[i][j]-1][2]);
-		}
-		glEnd();
-	}
-	
-
-	glDisable(GL_TEXTURE_2D);
   glutSwapBuffers();
 }
 void engine::Proccesing()

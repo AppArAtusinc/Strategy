@@ -104,10 +104,10 @@ public:
 
                 mPos.y += speed;
                 mView.y+=speed;
-				if(mPos.y<=20)
+				if(mPos.y<=10)
 				{
-					mPos.y=20;
-					mView.y=10;
+					mPos.y=10;
+					mView.y=0;
 				}
 				if(mPos.y>=70)
 				{

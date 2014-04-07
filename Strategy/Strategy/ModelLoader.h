@@ -1,17 +1,18 @@
-#pragma once
+#ifndef MLOADER
+#define MLOADER
+
+
 #include<fstream>
 #include<vector>
 #include<string>
 void LoadModel(
 	char* filename, std::vector<std::vector<float>> &vertex,
-	std::vector<std::vector<float>> &normals,
 	std::vector<std::vector<float>> &texturecoords,
 	std::vector<std::vector<float>> &indexcoord,
 	std::vector<std::vector<float>> &textureindex
 	)
 {
 	vertex.clear();
-	normals.clear();
 	texturecoords.clear();
 	std::ifstream in(filename);
 	std::string s = "v ";
@@ -59,7 +60,7 @@ nor:
 		temp.push_back(t);
 		in>>t;
 		temp.push_back(t);
-		normals.push_back(temp);
+		//normals.push_back(temp);
 		temp.clear();
 		goto choose;
 
@@ -81,3 +82,4 @@ index:
 		goto choose;
 	
 }
+#endif 
