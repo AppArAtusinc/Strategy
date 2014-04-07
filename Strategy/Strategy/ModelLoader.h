@@ -29,6 +29,7 @@ choose:
 			goto nor;
 		if(s == "f")
 			goto index;
+		while(!in.eof() && in.peek()!='\n')in.get();
 	}
 	return ;
 coords:
@@ -63,18 +64,20 @@ nor:
 		goto choose;
 
 index:
-		while(in.peek()!='\n' && !in.eof() )
+		while( !in.eof() && in.peek()!='\n')
 		{
 			in>>t;
 			temp.push_back(t);
-			in.get();
-			in>>t;
-			temp2.push_back(t);
+			if(in.peek() == '/' )
+			{
+				in.get();
+				in>>t;
+				temp2.push_back(t);
+			}
 		}
 		indexcoord.push_back(temp);
-		textureindex.push_back(temp2);
+		if(temp2.size())textureindex.push_back(temp2),temp2.clear();
 		temp.clear();
-		temp2.clear();
 		goto choose;
 	
 }

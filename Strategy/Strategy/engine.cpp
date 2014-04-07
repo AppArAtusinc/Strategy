@@ -1,9 +1,10 @@
 #include "engine.h"
 #include "TextureLoader.h"
 #include"ModelLoader.h"
-
+#include<time.h>
 #include<vector>
 #include<GL/freeglut.h>
+#include<iostream>
 TextureImage *tex;
 std::vector<std::vector<float>> vertex,normals,texture,index,tindex;
 void DrawGrid(int x, float quad_size)
@@ -52,8 +53,8 @@ engine::engine(int Test)
 	ilInit();
     iluInit();
     camera = new Camera(0,10,10,0,0,0,0,0,-1);
-	LoadTexture(IL_JPG,"wall.jpg",tex);
-	LoadModel("piramida.obj",vertex,normals,texture,index,tindex);
+	LoadTexture(IL_JPG,"conus.jpg",tex);
+	LoadModel("mirrow.obj",vertex,normals,texture,index,tindex);
 }
 void engine::Keyboard(int key, int x, int y)
 {
@@ -79,6 +80,17 @@ void engine::MouseMoution(int x, int y)
 }
 void engine::Draw()//<--пока типа заглушка
 {
+	static int time =0,count=0;
+	if((clock() - time) > 1000)
+	{
+		system("cls");
+		time = clock();
+		std::cout<<count;
+		count=0;
+	}
+	else
+		count++;
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     camera->Look(); //Обновляем взгляд камеры
@@ -88,6 +100,7 @@ void engine::Draw()//<--пока типа заглушка
 		DrawGrid(30,1);
 	glPopMatrix();*/
 	glEnable(GL_TEXTURE_2D);
+	
 	for(int  i=0;i<index.size();i++)
 	{
 		glBegin(GL_POLYGON);
@@ -98,6 +111,7 @@ void engine::Draw()//<--пока типа заглушка
 		}
 		glEnd();
 	}
+	
 
 	glDisable(GL_TEXTURE_2D);
   glutSwapBuffers();

@@ -67,7 +67,7 @@ void Time(int)
 {
     eng->Proccesing();
     eng->Draw();
-    glutTimerFunc(50,Time,0);
+    glutTimerFunc(10,Time,0);
 }
 void MouseMotion(int x, int y)
 {
