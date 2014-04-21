@@ -72,8 +72,8 @@ public:
 
     void Move_Camera(float speed) //Задаем скорость
             {
-				mPos.z -=  mStrafe.z * speed;
-				mView.z -= mStrafe.z * speed;
+				mPos.y -=  mStrafe.y * speed;
+				mView.y -= mStrafe.y * speed;
 				
                /*Vector3D vVector; //Получаем вектор взгляда
                 vVector.x = mView.x - mPos.x;
@@ -102,17 +102,17 @@ public:
     void upDown(float speed)
             {
 
-                mPos.y += speed;
-                mView.y+=speed;
-				if(mPos.y<=10)
+                mPos.z += speed;
+                mView.z+=speed;
+				if(mPos.z<=10)
 				{
-					mPos.y=10;
-					mView.y=0;
+					mPos.z=10;
+					mView.z=0;
 				}
-				if(mPos.y>=70)
+				if(mPos.z>=70)
 				{
-					mPos.y=70;
-					mView.y=60;
+					mPos.z=70;
+					mView.z=60;
 				}
             }
     void Look()

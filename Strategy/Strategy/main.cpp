@@ -43,19 +43,22 @@ void Init()
                 glMatrixMode( GL_PROJECTION);
                 glLoadIdentity();
 
-                gluPerspective(45, 1366.0/768, 0.1, 1000);
+                gluPerspective(45, 1366.0/768.0, 0.1, 1000);
 
                 glMatrixMode( GL_MODELVIEW);
                 glLoadIdentity();
+				//glHint       ( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
+				//glEnable     ( GL_CULL_FACE );
+				///glShadeModel ( GL_FLAT );
+				//glCullFace   ( GL_BACK );
 
-                glEnable( GL_DEPTH_TEST);
-                glEnable( GL_LIGHTING);
-                glEnable( GL_LIGHT0);
+              //  glEnable( GL_LIGHTING);
+              //  glEnable( GL_LIGHT0);
 
                 glBlendFunc( GL_SRC_ALPHA,  GL_ONE_MINUS_SRC_ALPHA);
                 glHint( GL_LINE_SMOOTH_HINT,  GL_NICEST);
-                glEnable( GL_BLEND);
-                glEnable( GL_LINE_SMOOTH);
+                //glEnable( GL_BLEND);
+               // glEnable( GL_LINE_SMOOTH);
                 glLineWidth(1.0f);
                 eng = new engine();
    //укажем начальную позицию камеры,взгляда и вертикального вектора.
@@ -67,7 +70,7 @@ void Time(int)
 {
     eng->Proccesing();
     eng->Draw();
-    glutTimerFunc(10,Time,0);
+    glutTimerFunc(0,Time,0);
 }
 void MouseMotion(int x, int y)
 {
@@ -82,15 +85,15 @@ void Mouse(int button, int state, int x, int y)
 int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-    //glutInitWindowSize(512, 288);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+    glutInitWindowSize(512, 288);
  
-	//glutGameModeString( "1024x768:32@60" );
+	//glutGameModeString( "1366x768:32@60" );
 	//glutEnterGameMode();
     glutCreateWindow("let's start");
     glutIgnoreKeyRepeat(true);
     Init();
-	glutFullScreen();
+	//glutFullScreen();
     glutDisplayFunc(Display);
     glutReshapeFunc(Reshape);
     glutKeyboardFunc(KeyboardDown);

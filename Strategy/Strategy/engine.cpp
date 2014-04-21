@@ -6,7 +6,7 @@
 #include<iostream>
 #include"GameObject.h"
 #include"TextureLoader.h"
-Unit* unit;
+vector<Unit*> units;
 FactoryUnit* fac;
 TextureImage* tex;
 void DrawGrid(int x, float quad_size)
@@ -51,14 +51,18 @@ void DrawGrid(int x, float quad_size)
 
 engine::engine(int Test)
 {      
+	srand((unsigned int)&units);
 	ilInit();
     iluInit();
-    camera = new Camera(0,10,10,0,0,0,0,0,-1);
+    camera = new Camera(0,10,10,0,0,0,0,0,1);
 	tex = new TextureImage();
 	LoadTexture(IL_JPG,"grass.jpg",tex);
 	fac = new  FactoryUnit("sdf");
-	fac->Load("women.obj", "wall.jpg");
-	unit = fac->GetUnit(0,0,0);
+	fac->Load("cube2.obj", "wall.jpg");
+	int randn = 100;
+	for(int i=0;i<randn;i++)
+		units.push_back(fac->GetUnit(0,rand()%50 - rand()%50,rand()%50 - rand()%50));
+	//color[3] = new unsigned char[3];
 }
 void engine::Keyboard(int key, int x, int y)
 {
@@ -66,6 +70,7 @@ void engine::Keyboard(int key, int x, int y)
 }
 void engine::Mouse(int button, int state, int x, int y)
 {
+
     if(button == GLUT_LEFT_BUTTON)
     {
         mouse.left = state;
@@ -74,6 +79,20 @@ void engine::Mouse(int button, int state, int x, int y)
         mouse.tx = mouse.x;
         mouse.ty = mouse.y;
     }
+	if(button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+	{
+		Indificator ID;
+		ID.bytes[3]=0;
+		glClear(GL_COLOR_BUFFER_BIT);
+			for(int i=0;i<units.size();i++ )
+				units[i]->EasyDraw();
+			glReadPixels ( x, 288-y, 1, 1,  GL_BGR_EXT, GL_UNSIGNED_BYTE, ID.bytes );
+		//system("cls");
+		if(ID.bytes[0] == 255 && ID.bytes[1] == 255 && ID.bytes[2] == 255)
+			cout<<"Empty"<<endl;
+		else
+			cout<<"ID:"<<ID.ID<<endl;
+	}
 }
 void engine::MouseMoution(int x, int y)
 {
@@ -84,30 +103,32 @@ void engine::MouseMoution(int x, int y)
 }
 void engine::Draw()//<--пока типа заглушка
 {
-	static int time =0,count=0;
+	static int time =0,count=1000;
 	if((clock() - time) > 1000)
 	{
-		system("cls");
+		//system("cls");
 		time = clock();
-		std::cout<<count;
-		count=0;
+			std::cout<<"FPS:"<<count<<" "<<"NumOfObj:"<<units.size()<<endl;//фпс и количество объектов
+			count=0;
+		
 	}
 	else
 		count++;
-
+	glColor3f(1.0,1.0,1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     camera->Look(); //Обновляем взгляд камеры
 	glBindTexture(GL_TEXTURE_2D,tex->texID);
 	glEnable(GL_TEXTURE_2D);
 	glBegin(GL_POLYGON);
-	glTexCoord2f(0,0);glVertex3f(-20,0,-20);
-	glTexCoord2f(1,0);glVertex3f(20,0,-20);
-	glTexCoord2f(1,1);glVertex3f(20,0,20);
-	glTexCoord2f(0,1);glVertex3f(-20,0,20);
+	glTexCoord2f(0,0);glVertex3f(-20,-20,0);
+	glTexCoord2f(1,0);glVertex3f(20,-20,0);
+	glTexCoord2f(1,1);glVertex3f(20,20,0);
+	glTexCoord2f(0,1);glVertex3f(-20,20,0);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
-	unit->Draw();
+	for(int i=0;i<units.size();i++ )
+		units[i]->EasyDraw();
 	/*glPushMatrix();
 		DrawGrid(30,1);
 	glPopMatrix();*/
@@ -123,9 +144,9 @@ void engine::Proccesing()
         if((*i).first == 's' && (*i).second)
             camera->Move_Camera(-1);
         if((*i).first == 'a' && (*i).second)
-            camera->Strafe(-1);
-        if((*i).first == 'd' && (*i).second)
             camera->Strafe(1);
+        if((*i).first == 'd' && (*i).second)
+            camera->Strafe(-1);
         if((*i).first == 'q' && (*i).second)
             camera->upDown(1);
         if((*i).first == 'e' && (*i).second)
