@@ -1,6 +1,5 @@
 #pragma once
-#include<GL\glew.h>
-#include<GL/glut.h>
+#include<gl/glew.h>
 #include<math.h>
 
 class Camera
@@ -115,7 +114,6 @@ public:
 					mPos.z=70;
 					mView.z=60;
 				}
-
             }
     void Look()
             {

@@ -1,12 +1,12 @@
 #ifndef MLOADER
 #define MLOADER
 
-
+#include<GL\glew.h>
 #include<fstream>
 #include<vector>
 #include<string>
-#include<gl\glew.h>
-/*
+
+
 void VBOLoadModel(char* filename, GLuint& VertexID, GLuint& TextureID, GLuint Count)
 {
 	std::vector<float> vertex,texcoords;
@@ -20,16 +20,29 @@ void VBOLoadModel(char* filename, GLuint& VertexID, GLuint& TextureID, GLuint Co
 		{
 			in>>temp;
 			vertex.push_back(temp);
+			in>>temp;
+			vertex.push_back(temp);
+			in>>temp;
+			vertex.push_back(temp);
 		}
 		if(s == "vt")
-			goto text;
-		if(s == "vn")
-			goto nor;
-		if(s == "f")
-			goto index;
+		{
+			in>>temp;
+			vertex.push_back(temp);
+			in>>temp;
+			vertex.push_back(temp);
+		}
+		/*if(s == "vn")
+			goto nor;*/
+		if(s == "f")//не конец
+		{
+			in>>temp;
+			vertex.push_back(temp);
+		}
 		while(!in.eof() && in.peek()!='\n')in.get();
 	}
-}*/
+}
+
 void LoadModel(
 	char* filename, std::vector<std::vector<float>> &vertex,
 	std::vector<std::vector<float>> &texturecoords,

@@ -1,15 +1,16 @@
 #include"engine.h"
 #include<time.h>
 #include<vector>
+#include<GL\glew.h>
 #include<IL\il.h>
-#include<GL/freeglut.h>
+
 #include<iostream>
 #include"GameObject.h"
 #include"TextureLoader.h"
 vector<Unit*> units;
 FactoryUnit* fac;
 TextureImage* tex;
-void DrawGrid(int x, float quad_size)
+/*void DrawGrid(int x, float quad_size)
 {
             //x - количество или длина сетки, quad_size - размер клетки
     glPushMatrix(); //Рисуем оси координат, цвет объявлен в самом начале
@@ -48,7 +49,7 @@ void DrawGrid(int x, float quad_size)
                 glEnd();
             }
         }
-
+*/
 engine::engine(int Test)
 {      
 	srand((unsigned int)&units);
@@ -58,10 +59,10 @@ engine::engine(int Test)
 	tex = new TextureImage();
 	LoadTexture(IL_JPG,"grass.jpg",tex);
 	fac = new  FactoryUnit("sdf");
-	fac->Load("cube2.obj", "wall.jpg");
+	fac->Load("cubeTringle.obj", "wall.jpg");
 	int randn = 100;
 	for(int i=0;i<randn;i++)
-		units.push_back(fac->GetUnit(0,rand()%50 - rand()%50,rand()%50 - rand()%50));
+		units.push_back(fac->GetUnit(0,rand()%50 - rand()%50,rand()%50 - rand()%50,rand()%360));
 	//color[3] = new unsigned char[3];
 }
 void engine::Keyboard(int key, int x, int y)
@@ -110,7 +111,7 @@ void engine::Draw()//<--пока типа заглушка
 		time = clock();
 			std::cout<<"FPS:"<<count<<" "<<"NumOfObj:"<<units.size()<<endl;//фпс и количество объектов
 			count=0;
-		
+	
 	}
 	else
 		count++;
@@ -127,6 +128,8 @@ void engine::Draw()//<--пока типа заглушка
 	glTexCoord2f(0,1);glVertex3f(-20,20,0);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
+	for(int i=0;i<units.size();i++)
+		units[i]->Rotage(rand()%10*0.01);
 	for(int i=0;i<units.size();i++ )
 		units[i]->EasyDraw();
 	/*glPushMatrix();

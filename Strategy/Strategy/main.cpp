@@ -1,6 +1,6 @@
-#include<GL\glut.h>
-#include<GL\freeglut.h>
+#include<gl\glew.h>
 #include"engine.h"
+#pragma comment(lib,"glew32.lib")
 #pragma comment(lib,"DevIL.lib")
 #pragma comment(lib,"ilut.lib")
 #pragma comment(lib,"ilu.lib")
@@ -37,30 +37,30 @@ void KeyboarUp( unsigned char key, int x, int y )
 void Init()
 {
 
-                glClearColor(1, 1, 1,1);
+    glClearColor(1, 1, 1,1);
 
+	glewInit();
+    glMatrixMode( GL_PROJECTION);
+    glLoadIdentity();
 
-                glMatrixMode( GL_PROJECTION);
-                glLoadIdentity();
+    gluPerspective(45, 1366.0/768.0, 0.1, 1000);
 
-                gluPerspective(45, 1366.0/768.0, 0.1, 1000);
+    glMatrixMode( GL_MODELVIEW);
+    glLoadIdentity();
+	//glHint       ( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
+	//glEnable     ( GL_CULL_FACE );
+	///glShadeModel ( GL_FLAT );
+	//glCullFace   ( GL_BACK );
 
-                glMatrixMode( GL_MODELVIEW);
-                glLoadIdentity();
-				//glHint       ( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
-				//glEnable     ( GL_CULL_FACE );
-				///glShadeModel ( GL_FLAT );
-				//glCullFace   ( GL_BACK );
+    //  glEnable( GL_LIGHTING);
+    //  glEnable( GL_LIGHT0);
 
-              //  glEnable( GL_LIGHTING);
-              //  glEnable( GL_LIGHT0);
-
-                glBlendFunc( GL_SRC_ALPHA,  GL_ONE_MINUS_SRC_ALPHA);
-                glHint( GL_LINE_SMOOTH_HINT,  GL_NICEST);
-                //glEnable( GL_BLEND);
-               // glEnable( GL_LINE_SMOOTH);
-                glLineWidth(1.0f);
-                eng = new engine();
+    glBlendFunc( GL_SRC_ALPHA,  GL_ONE_MINUS_SRC_ALPHA);
+    glHint( GL_LINE_SMOOTH_HINT,  GL_NICEST);
+    //glEnable( GL_BLEND);
+    // glEnable( GL_LINE_SMOOTH);
+    glLineWidth(1.0f);
+    eng = new engine();
    //укажем начальную позицию камеры,взгляда и вертикального вектора.
 
 
@@ -70,7 +70,7 @@ void Time(int)
 {
     eng->Proccesing();
     eng->Draw();
-    glutTimerFunc(0,Time,0);
+    glutTimerFunc(10,Time,0);
 }
 void MouseMotion(int x, int y)
 {
